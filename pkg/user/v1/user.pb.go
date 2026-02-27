@@ -25,7 +25,7 @@ const (
 // The User message represents an e-commerce customer.
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	FirstName     string                 `protobuf:"bytes,3,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
 	LastName      string                 `protobuf:"bytes,8,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
@@ -67,11 +67,11 @@ func (*User) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *User) GetId() int64 {
+func (x *User) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 func (x *User) GetEmail() string {
@@ -203,7 +203,7 @@ func (x *Address) GetCountry() string {
 // Request to get a user by ID.
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -238,11 +238,11 @@ func (*GetUserRequest) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetUserRequest) GetId() int64 {
+func (x *GetUserRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 // Response for getting a user.
@@ -476,7 +476,7 @@ func (x *SignupRequest) GetLastName() string {
 // Response for customer signup
 type SignupResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -511,20 +511,20 @@ func (*SignupResponse) Descriptor() ([]byte, []int) {
 	return file_user_v1_user_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *SignupResponse) GetId() int64 {
+func (x *SignupResponse) GetUser() *User {
 	if x != nil {
-		return x.Id
+		return x.User
 	}
-	return 0
+	return nil
 }
 
 var File_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x12user/v1/user.proto\x12\auser.v1\x1a\x17validate/validate.proto\"\x8a\x02\n" +
-	"\x04User\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\x1d\n" +
+	"\x12user/v1/user.proto\x12\auser.v1\x1a\x17validate/validate.proto\"\x8b\x02\n" +
+	"\x04User\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x12\x1d\n" +
 	"\x05email\x18\x02 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\x12&\n" +
 	"\n" +
 	"first_name\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\tfirstName\x12$\n" +
@@ -540,9 +540,9 @@ const file_user_v1_user_proto_rawDesc = "" +
 	"\x04city\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04city\x12\x1d\n" +
 	"\x05state\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05state\x12\x19\n" +
 	"\x03zip\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x03zip\x12\"\n" +
-	"\acountry\x18\x05 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x02R\acountry\")\n" +
-	"\x0eGetUserRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\"4\n" +
+	"\acountry\x18\x05 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x02R\acountry\"*\n" +
+	"\x0eGetUserRequest\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\"4\n" +
 	"\x0fGetUserResponse\x12!\n" +
 	"\x04user\x18\x01 \x01(\v2\r.user.v1.UserR\x04user\"\xac\x01\n" +
 	"\x11CreateUserRequest\x12\x1d\n" +
@@ -558,9 +558,9 @@ const file_user_v1_user_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\bR\bpassword\x12&\n" +
 	"\n" +
 	"first_name\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\tfirstName\x12$\n" +
-	"\tlast_name\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\blastName\" \n" +
-	"\x0eSignupResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x03R\x02id2\xcd\x01\n" +
+	"\tlast_name\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\blastName\"3\n" +
+	"\x0eSignupResponse\x12!\n" +
+	"\x04user\x18\x01 \x01(\v2\r.user.v1.UserR\x04user2\xcd\x01\n" +
 	"\vUserService\x12<\n" +
 	"\aGetUser\x12\x17.user.v1.GetUserRequest\x1a\x18.user.v1.GetUserResponse\x12E\n" +
 	"\n" +
@@ -594,17 +594,18 @@ var file_user_v1_user_proto_depIdxs = []int32{
 	1, // 0: user.v1.User.address:type_name -> user.v1.Address
 	0, // 1: user.v1.GetUserResponse.user:type_name -> user.v1.User
 	0, // 2: user.v1.CreateUserResponse.user:type_name -> user.v1.User
-	2, // 3: user.v1.UserService.GetUser:input_type -> user.v1.GetUserRequest
-	4, // 4: user.v1.UserService.CreateUser:input_type -> user.v1.CreateUserRequest
-	6, // 5: user.v1.UserService.Signup:input_type -> user.v1.SignupRequest
-	3, // 6: user.v1.UserService.GetUser:output_type -> user.v1.GetUserResponse
-	5, // 7: user.v1.UserService.CreateUser:output_type -> user.v1.CreateUserResponse
-	7, // 8: user.v1.UserService.Signup:output_type -> user.v1.SignupResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0, // 3: user.v1.SignupResponse.user:type_name -> user.v1.User
+	2, // 4: user.v1.UserService.GetUser:input_type -> user.v1.GetUserRequest
+	4, // 5: user.v1.UserService.CreateUser:input_type -> user.v1.CreateUserRequest
+	6, // 6: user.v1.UserService.Signup:input_type -> user.v1.SignupRequest
+	3, // 7: user.v1.UserService.GetUser:output_type -> user.v1.GetUserResponse
+	5, // 8: user.v1.UserService.CreateUser:output_type -> user.v1.CreateUserResponse
+	7, // 9: user.v1.UserService.Signup:output_type -> user.v1.SignupResponse
+	7, // [7:10] is the sub-list for method output_type
+	4, // [4:7] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_user_v1_user_proto_init() }

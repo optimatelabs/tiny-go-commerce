@@ -8,7 +8,7 @@ import "validate/validate.proto";
 
 // The User message represents an e-commerce customer.
 message User {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
   string email = 2 [(validate.rules).string.email = true];
   string first_name = 3 [(validate.rules).string.min_len = 1];
   string last_name = 8 [(validate.rules).string.min_len = 1];
@@ -29,7 +29,7 @@ message Address {
 
 // Request to get a user by ID.
 message GetUserRequest {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
 }
 
 // Response for getting a user.
@@ -60,7 +60,7 @@ message SignupRequest {
 
 // Response for customer signup
 message SignupResponse {
-    int64 id = 1;
+    User user = 1;
 }
 
 // UserService provides user management operations.
