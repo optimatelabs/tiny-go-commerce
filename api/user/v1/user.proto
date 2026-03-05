@@ -5,6 +5,7 @@ package user.v1;
 option go_package = "github.com/optimatelabs/tiny-go-commerce/pkg/user/v1";
 
 import "validate/validate.proto";
+import "google/api/annotations.proto";
 
 // The User message represents an e-commerce customer.
 message User {
@@ -65,7 +66,21 @@ message SignupResponse {
 
 // UserService provides user management operations.
 service UserService {
-  rpc GetUser(GetUserRequest) returns (GetUserResponse);
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
-  rpc Signup(SignupRequest) returns (SignupResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/{id}"
+    };
+  }
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "*"
+    };
+  }
+  rpc Signup(SignupRequest) returns (SignupResponse) {
+    option (google.api.http) = {
+      post: "/v1/users/signup"
+      body: "*"
+    };
+  }
 }

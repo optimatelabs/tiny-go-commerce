@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,7 +26,7 @@ const (
 // The Product message represents an e-commerce product.
 type Product struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	Price         float64                `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
@@ -67,11 +68,11 @@ func (*Product) Descriptor() ([]byte, []int) {
 	return file_product_v1_product_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Product) GetId() int64 {
+func (x *Product) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 func (x *Product) GetName() string {
@@ -126,7 +127,7 @@ func (x *Product) GetUpdatedAt() string {
 // Request to get a product by ID.
 type GetProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -161,11 +162,11 @@ func (*GetProductRequest) Descriptor() ([]byte, []int) {
 	return file_product_v1_product_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetProductRequest) GetId() int64 {
+func (x *GetProductRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 // Response for getting a product.
@@ -338,7 +339,7 @@ func (x *CreateProductResponse) GetProduct() *Product {
 // Request to update an existing product.
 type UpdateProductRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	Price         float64                `protobuf:"fixed64,4,opt,name=price,proto3" json:"price,omitempty"`
@@ -378,11 +379,11 @@ func (*UpdateProductRequest) Descriptor() ([]byte, []int) {
 	return file_product_v1_product_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *UpdateProductRequest) GetId() int64 {
+func (x *UpdateProductRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 func (x *UpdateProductRequest) GetName() string {
@@ -576,9 +577,9 @@ var File_product_v1_product_proto protoreflect.FileDescriptor
 const file_product_v1_product_proto_rawDesc = "" +
 	"\n" +
 	"\x18product/v1/product.proto\x12\n" +
-	"product.v1\x1a\x17validate/validate.proto\"\x91\x02\n" +
-	"\aProduct\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\x1b\n" +
+	"product.v1\x1a\x17validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\"\x92\x02\n" +
+	"\aProduct\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x12\x1b\n" +
 	"\x04name\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12$\n" +
 	"\x05price\x18\x04 \x01(\x01B\x0e\xfaB\v\x12\t)\x00\x00\x00\x00\x00\x00\x00\x00R\x05price\x12%\n" +
@@ -587,9 +588,9 @@ const file_product_v1_product_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\tR\tupdatedAt\",\n" +
-	"\x11GetProductRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\"C\n" +
+	"updated_at\x18\b \x01(\tR\tupdatedAt\"-\n" +
+	"\x11GetProductRequest\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\"C\n" +
 	"\x12GetProductResponse\x12-\n" +
 	"\aproduct\x18\x01 \x01(\v2\x13.product.v1.ProductR\aproduct\"\xc7\x01\n" +
 	"\x14CreateProductRequest\x12\x1b\n" +
@@ -599,9 +600,9 @@ const file_product_v1_product_proto_rawDesc = "" +
 	"\tinventory\x18\x04 \x01(\x05B\a\xfaB\x04\x1a\x02(\x00R\tinventory\x12#\n" +
 	"\bcategory\x18\x05 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\bcategory\"F\n" +
 	"\x15CreateProductResponse\x12-\n" +
-	"\aproduct\x18\x01 \x01(\v2\x13.product.v1.ProductR\aproduct\"\xe0\x01\n" +
-	"\x14UpdateProductRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\x1b\n" +
+	"\aproduct\x18\x01 \x01(\v2\x13.product.v1.ProductR\aproduct\"\xe1\x01\n" +
+	"\x14UpdateProductRequest\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x12\x1b\n" +
 	"\x04name\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04name\x12 \n" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12$\n" +
 	"\x05price\x18\x04 \x01(\x01B\x0e\xfaB\v\x12\t)\x00\x00\x00\x00\x00\x00\x00\x00R\x05price\x12%\n" +
@@ -615,13 +616,13 @@ const file_product_v1_product_proto_rawDesc = "" +
 	"page_token\x18\x02 \x01(\tR\tpageToken\"o\n" +
 	"\x14ListProductsResponse\x12/\n" +
 	"\bproducts\x18\x01 \x03(\v2\x13.product.v1.ProductR\bproducts\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xdc\x02\n" +
-	"\x0eProductService\x12K\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xc4\x03\n" +
+	"\x0eProductService\x12f\n" +
 	"\n" +
-	"GetProduct\x12\x1d.product.v1.GetProductRequest\x1a\x1e.product.v1.GetProductResponse\x12T\n" +
-	"\rCreateProduct\x12 .product.v1.CreateProductRequest\x1a!.product.v1.CreateProductResponse\x12T\n" +
-	"\rUpdateProduct\x12 .product.v1.UpdateProductRequest\x1a!.product.v1.UpdateProductResponse\x12Q\n" +
-	"\fListProducts\x12\x1f.product.v1.ListProductsRequest\x1a .product.v1.ListProductsResponseB9Z7github.com/optimatelabs/tiny-go-commerce/pkg/product/v1b\x06proto3"
+	"GetProduct\x12\x1d.product.v1.GetProductRequest\x1a\x1e.product.v1.GetProductResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/products/{id}\x12m\n" +
+	"\rCreateProduct\x12 .product.v1.CreateProductRequest\x1a!.product.v1.CreateProductResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/products\x12r\n" +
+	"\rUpdateProduct\x12 .product.v1.UpdateProductRequest\x1a!.product.v1.UpdateProductResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\x1a\x11/v1/products/{id}\x12g\n" +
+	"\fListProducts\x12\x1f.product.v1.ListProductsRequest\x1a .product.v1.ListProductsResponse\"\x14\x82\xd3\xe4\x93\x02\x0e\x12\f/v1/productsB9Z7github.com/optimatelabs/tiny-go-commerce/pkg/product/v1b\x06proto3"
 
 var (
 	file_product_v1_product_proto_rawDescOnce sync.Once

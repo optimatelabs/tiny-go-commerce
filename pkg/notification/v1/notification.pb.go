@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -131,8 +132,8 @@ func (NotificationStatus) EnumDescriptor() ([]byte, []int) {
 // Notification represents an outbound transactional message.
 type Notification struct {
 	state  protoimpl.MessageState `protogen:"open.v1"`
-	Id     int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Id     string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Type   NotificationType       `protobuf:"varint,3,opt,name=type,proto3,enum=notification.v1.NotificationType" json:"type,omitempty"`
 	// The contact destination (email address or phone number)
 	Destination   string             `protobuf:"bytes,4,opt,name=destination,proto3" json:"destination,omitempty"`
@@ -175,18 +176,18 @@ func (*Notification) Descriptor() ([]byte, []int) {
 	return file_notification_v1_notification_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Notification) GetId() int64 {
+func (x *Notification) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
-func (x *Notification) GetUserId() int64 {
+func (x *Notification) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 func (x *Notification) GetType() NotificationType {
@@ -241,7 +242,7 @@ func (x *Notification) GetSentAt() string {
 // Request to queue an outbound email, text, or push alert.
 type SendNotificationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Type          NotificationType       `protobuf:"varint,2,opt,name=type,proto3,enum=notification.v1.NotificationType" json:"type,omitempty"`
 	Destination   string                 `protobuf:"bytes,3,opt,name=destination,proto3" json:"destination,omitempty"`
 	Subject       string                 `protobuf:"bytes,4,opt,name=subject,proto3" json:"subject,omitempty"` // Optional for SMS/Push
@@ -280,11 +281,11 @@ func (*SendNotificationRequest) Descriptor() ([]byte, []int) {
 	return file_notification_v1_notification_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SendNotificationRequest) GetUserId() int64 {
+func (x *SendNotificationRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 func (x *SendNotificationRequest) GetType() NotificationType {
@@ -363,7 +364,7 @@ func (x *SendNotificationResponse) GetNotification() *Notification {
 // Request to poll the delivery status of a specific message.
 type GetNotificationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -398,11 +399,11 @@ func (*GetNotificationRequest) Descriptor() ([]byte, []int) {
 	return file_notification_v1_notification_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetNotificationRequest) GetId() int64 {
+func (x *GetNotificationRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 // Response returning the delivery status of the message.
@@ -454,10 +455,10 @@ var File_notification_v1_notification_proto protoreflect.FileDescriptor
 
 const file_notification_v1_notification_proto_rawDesc = "" +
 	"\n" +
-	"\"notification/v1/notification.proto\x12\x0fnotification.v1\x1a\x17validate/validate.proto\"\xeb\x02\n" +
-	"\fNotification\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x06userId\x12?\n" +
+	"\"notification/v1/notification.proto\x12\x0fnotification.v1\x1a\x17validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\"\xed\x02\n" +
+	"\fNotification\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x12!\n" +
+	"\auser_id\x18\x02 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x06userId\x12?\n" +
 	"\x04type\x18\x03 \x01(\x0e2!.notification.v1.NotificationTypeB\b\xfaB\x05\x82\x01\x02\x10\x01R\x04type\x12)\n" +
 	"\vdestination\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\vdestination\x12\x18\n" +
 	"\asubject\x18\x05 \x01(\tR\asubject\x12\x1b\n" +
@@ -465,18 +466,18 @@ const file_notification_v1_notification_proto_rawDesc = "" +
 	"\x06status\x18\a \x01(\x0e2#.notification.v1.NotificationStatusB\b\xfaB\x05\x82\x01\x02\x10\x01R\x06status\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\b \x01(\tR\tcreatedAt\x12\x17\n" +
-	"\asent_at\x18\t \x01(\tR\x06sentAt\"\xe0\x01\n" +
-	"\x17SendNotificationRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x06userId\x12A\n" +
+	"\asent_at\x18\t \x01(\tR\x06sentAt\"\xe1\x01\n" +
+	"\x17SendNotificationRequest\x12!\n" +
+	"\auser_id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x06userId\x12A\n" +
 	"\x04type\x18\x02 \x01(\x0e2!.notification.v1.NotificationTypeB\n" +
 	"\xfaB\a\x82\x01\x04\x10\x01 \x00R\x04type\x12)\n" +
 	"\vdestination\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\vdestination\x12\x18\n" +
 	"\asubject\x18\x04 \x01(\tR\asubject\x12\x1b\n" +
 	"\x04body\x18\x05 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04body\"]\n" +
 	"\x18SendNotificationResponse\x12A\n" +
-	"\fnotification\x18\x01 \x01(\v2\x1d.notification.v1.NotificationR\fnotification\"1\n" +
-	"\x16GetNotificationRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\"\\\n" +
+	"\fnotification\x18\x01 \x01(\v2\x1d.notification.v1.NotificationR\fnotification\"2\n" +
+	"\x16GetNotificationRequest\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\"\\\n" +
 	"\x17GetNotificationResponse\x12A\n" +
 	"\fnotification\x18\x01 \x01(\v2\x1d.notification.v1.NotificationR\fnotification*\x89\x01\n" +
 	"\x10NotificationType\x12!\n" +
@@ -488,10 +489,10 @@ const file_notification_v1_notification_proto_rawDesc = "" +
 	"\x1fNOTIFICATION_STATUS_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bNOTIFICATION_STATUS_PENDING\x10\x01\x12\x1c\n" +
 	"\x18NOTIFICATION_STATUS_SENT\x10\x02\x12\x1e\n" +
-	"\x1aNOTIFICATION_STATUS_FAILED\x10\x032\xe4\x01\n" +
-	"\x13NotificationService\x12g\n" +
-	"\x10SendNotification\x12(.notification.v1.SendNotificationRequest\x1a).notification.v1.SendNotificationResponse\x12d\n" +
-	"\x0fGetNotification\x12'.notification.v1.GetNotificationRequest\x1a(.notification.v1.GetNotificationResponseB>Z<github.com/optimatelabs/tiny-go-commerce/pkg/notification/v1b\x06proto3"
+	"\x1aNOTIFICATION_STATUS_FAILED\x10\x032\xa4\x02\n" +
+	"\x13NotificationService\x12\x85\x01\n" +
+	"\x10SendNotification\x12(.notification.v1.SendNotificationRequest\x1a).notification.v1.SendNotificationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/notifications\x12\x84\x01\n" +
+	"\x0fGetNotification\x12'.notification.v1.GetNotificationRequest\x1a(.notification.v1.GetNotificationResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/notifications/{id}B>Z<github.com/optimatelabs/tiny-go-commerce/pkg/notification/v1b\x06proto3"
 
 var (
 	file_notification_v1_notification_proto_rawDescOnce sync.Once

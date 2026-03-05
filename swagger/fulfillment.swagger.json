@@ -1,0 +1,323 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "fulfillment/v1/fulfillment.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "FulfillmentService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/fulfillments": {
+      "post": {
+        "operationId": "FulfillmentService_CreateFulfillment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateFulfillmentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Request to initialize the fulfillment process for an order.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateFulfillmentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FulfillmentService"
+        ]
+      }
+    },
+    "/v1/fulfillments/{id}": {
+      "get": {
+        "operationId": "FulfillmentService_GetFulfillment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetFulfillmentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "FulfillmentService"
+        ]
+      }
+    },
+    "/v1/fulfillments/{id}/status": {
+      "patch": {
+        "operationId": "FulfillmentService_UpdateFulfillmentStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateFulfillmentStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FulfillmentServiceUpdateFulfillmentStatusBody"
+            }
+          }
+        ],
+        "tags": [
+          "FulfillmentService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "FulfillmentServiceUpdateFulfillmentStatusBody": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1FulfillmentStatus"
+        },
+        "trackingNumber": {
+          "type": "string",
+          "description": "Optional field to append tracking info if the carrier updates it."
+        }
+      },
+      "description": "Request to update the lifecycle status of a package/pickup (e.g., IN_TRANSIT, READY_FOR_PICKUP)."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateFulfillmentRequest": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/v1FulfillmentType",
+          "title": "Must be Shipping or Pickup"
+        },
+        "shipmentDetails": {
+          "$ref": "#/definitions/v1ShipmentDetails"
+        },
+        "pickupDetails": {
+          "$ref": "#/definitions/v1PickupDetails"
+        }
+      },
+      "description": "Request to initialize the fulfillment process for an order."
+    },
+    "v1CreateFulfillmentResponse": {
+      "type": "object",
+      "properties": {
+        "fulfillment": {
+          "$ref": "#/definitions/v1Fulfillment"
+        }
+      },
+      "description": "Response mapping the newly registered Fulfillment record."
+    },
+    "v1Fulfillment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "orderId": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/v1FulfillmentType"
+        },
+        "status": {
+          "$ref": "#/definitions/v1FulfillmentStatus"
+        },
+        "shipmentDetails": {
+          "$ref": "#/definitions/v1ShipmentDetails",
+          "title": "Populated if type == FULFILLMENT_TYPE_SHIPPING"
+        },
+        "pickupDetails": {
+          "$ref": "#/definitions/v1PickupDetails",
+          "title": "Populated if type == FULFILLMENT_TYPE_LOCAL_PICKUP"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "description": "Fulfillment represents how an order gets to the customer (shipping or local store pickup)."
+    },
+    "v1FulfillmentStatus": {
+      "type": "string",
+      "enum": [
+        "FULFILLMENT_STATUS_UNSPECIFIED",
+        "FULFILLMENT_STATUS_PREPARING",
+        "FULFILLMENT_STATUS_READY_FOR_PICKUP",
+        "FULFILLMENT_STATUS_IN_TRANSIT",
+        "FULFILLMENT_STATUS_DELIVERED",
+        "FULFILLMENT_STATUS_PICKED_UP",
+        "FULFILLMENT_STATUS_EXCEPTION"
+      ],
+      "default": "FULFILLMENT_STATUS_UNSPECIFIED",
+      "description": "Current status of the physical fulfillment."
+    },
+    "v1FulfillmentType": {
+      "type": "string",
+      "enum": [
+        "FULFILLMENT_TYPE_UNSPECIFIED",
+        "FULFILLMENT_TYPE_SHIPPING",
+        "FULFILLMENT_TYPE_LOCAL_PICKUP"
+      ],
+      "default": "FULFILLMENT_TYPE_UNSPECIFIED",
+      "description": "Type of fulfillment method chosen for the order."
+    },
+    "v1GetFulfillmentResponse": {
+      "type": "object",
+      "properties": {
+        "fulfillment": {
+          "$ref": "#/definitions/v1Fulfillment"
+        }
+      },
+      "description": "Response returning the current Fulfillment state."
+    },
+    "v1PickupDetails": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "string"
+        },
+        "pickupInstructions": {
+          "type": "string"
+        },
+        "pickupTime": {
+          "type": "string"
+        }
+      },
+      "description": "Specifics for a Buy Online, Pick Up In Store (BOPIS) order."
+    },
+    "v1ShipmentDetails": {
+      "type": "object",
+      "properties": {
+        "trackingNumber": {
+          "type": "string"
+        },
+        "carrier": {
+          "type": "string",
+          "title": "e.g., \"UPS\", \"FedEx\", \"USPS\""
+        },
+        "estimatedDelivery": {
+          "type": "string"
+        },
+        "destination": {
+          "$ref": "#/definitions/v1ShippingAddress"
+        }
+      },
+      "description": "Specifics for a carrier-based delivery."
+    },
+    "v1ShippingAddress": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      },
+      "description": "Basic address representation used strictly for routing."
+    },
+    "v1UpdateFulfillmentStatusResponse": {
+      "type": "object",
+      "properties": {
+        "fulfillment": {
+          "$ref": "#/definitions/v1Fulfillment"
+        }
+      },
+      "description": "Response after updating a fulfillment status."
+    }
+  }
+}

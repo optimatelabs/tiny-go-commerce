@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -409,7 +410,7 @@ var File_payment_v1_payment_proto protoreflect.FileDescriptor
 const file_payment_v1_payment_proto_rawDesc = "" +
 	"\n" +
 	"\x18payment/v1/payment.proto\x12\n" +
-	"payment.v1\x1a\x17validate/validate.proto\"\x88\x03\n" +
+	"payment.v1\x1a\x17validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\"\x88\x03\n" +
 	"\aPayment\x12\x17\n" +
 	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\"\n" +
 	"\border_id\x18\x02 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\aorderId\x12 \n" +
@@ -440,11 +441,11 @@ const file_payment_v1_payment_proto_rawDesc = "" +
 	"\x1aPAYMENT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PAYMENT_STATUS_PENDING\x10\x01\x12\x1a\n" +
 	"\x16PAYMENT_STATUS_SUCCESS\x10\x02\x12\x19\n" +
-	"\x15PAYMENT_STATUS_FAILED\x10\x032\xb6\x01\n" +
-	"\x0ePaymentService\x12W\n" +
-	"\x0eProcessPayment\x12!.payment.v1.ProcessPaymentRequest\x1a\".payment.v1.ProcessPaymentResponse\x12K\n" +
+	"\x15PAYMENT_STATUS_FAILED\x10\x032\xea\x01\n" +
+	"\x0ePaymentService\x12p\n" +
+	"\x0eProcessPayment\x12!.payment.v1.ProcessPaymentRequest\x1a\".payment.v1.ProcessPaymentResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/payments\x12f\n" +
 	"\n" +
-	"GetPayment\x12\x1d.payment.v1.GetPaymentRequest\x1a\x1e.payment.v1.GetPaymentResponseB9Z7github.com/optimatelabs/tiny-go-commerce/pkg/payment/v1b\x06proto3"
+	"GetPayment\x12\x1d.payment.v1.GetPaymentRequest\x1a\x1e.payment.v1.GetPaymentResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/payments/{id}B9Z7github.com/optimatelabs/tiny-go-commerce/pkg/payment/v1b\x06proto3"
 
 var (
 	file_payment_v1_payment_proto_rawDescOnce sync.Once

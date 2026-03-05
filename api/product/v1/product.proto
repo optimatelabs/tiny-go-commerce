@@ -5,10 +5,11 @@ package product.v1;
 option go_package = "github.com/optimatelabs/tiny-go-commerce/pkg/product/v1";
 
 import "validate/validate.proto";
+import "google/api/annotations.proto";
 
 // The Product message represents an e-commerce product.
 message Product {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
   string name = 2 [(validate.rules).string.min_len = 1];
   string description = 3;
   double price = 4 [(validate.rules).double.gte = 0];
@@ -20,7 +21,7 @@ message Product {
 
 // Request to get a product by ID.
 message GetProductRequest {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
 }
 
 // Response for getting a product.
@@ -44,7 +45,7 @@ message CreateProductResponse {
 
 // Request to update an existing product.
 message UpdateProductRequest {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
   string name = 2 [(validate.rules).string.min_len = 1];
   string description = 3;
   double price = 4 [(validate.rules).double.gte = 0];
@@ -71,8 +72,26 @@ message ListProductsResponse {
 
 // ProductService provides product management operations.
 service ProductService {
-  rpc GetProduct(GetProductRequest) returns (GetProductResponse);
-  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
-  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
-  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse) {
+    option (google.api.http) = {
+      get: "/v1/products/{id}"
+    };
+  }
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {
+    option (google.api.http) = {
+      post: "/v1/products"
+      body: "*"
+    };
+  }
+  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse) {
+    option (google.api.http) = {
+      put: "/v1/products/{id}"
+      body: "*"
+    };
+  }
+  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse) {
+    option (google.api.http) = {
+      get: "/v1/products"
+    };
+  }
 }

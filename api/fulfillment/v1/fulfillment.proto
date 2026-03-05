@@ -5,6 +5,7 @@ package fulfillment.v1;
 option go_package = "github.com/optimatelabs/tiny-go-commerce/pkg/fulfillment/v1";
 
 import "validate/validate.proto";
+import "google/api/annotations.proto";
 
 // Type of fulfillment method chosen for the order.
 enum FulfillmentType {
@@ -26,8 +27,8 @@ enum FulfillmentStatus {
 
 // Fulfillment represents how an order gets to the customer (shipping or local store pickup).
 message Fulfillment {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
-  int64 order_id = 2 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
+  string order_id = 2 [(validate.rules).string.uuid = true];
   FulfillmentType type = 3 [(validate.rules).enum.defined_only = true];
   FulfillmentStatus status = 4 [(validate.rules).enum.defined_only = true];
   
@@ -67,7 +68,7 @@ message ShippingAddress {
 
 // Request to initialize the fulfillment process for an order.
 message CreateFulfillmentRequest {
-  int64 order_id = 1 [(validate.rules).int64.gt = 0];
+  string order_id = 1 [(validate.rules).string.uuid = true];
   FulfillmentType type = 2 [(validate.rules).enum = {defined_only: true, not_in: [0]}]; // Must be Shipping or Pickup
   
   ShipmentDetails shipment_details = 3;
@@ -105,7 +106,21 @@ message UpdateFulfillmentStatusResponse {
 
 // FulfillmentService handles warehouse dispatching, carrier handoffs, and local pickups.
 service FulfillmentService {
-  rpc CreateFulfillment(CreateFulfillmentRequest) returns (CreateFulfillmentResponse);
-  rpc GetFulfillment(GetFulfillmentRequest) returns (GetFulfillmentResponse);
-  rpc UpdateFulfillmentStatus(UpdateFulfillmentStatusRequest) returns (UpdateFulfillmentStatusResponse);
+  rpc CreateFulfillment(CreateFulfillmentRequest) returns (CreateFulfillmentResponse) {
+    option (google.api.http) = {
+      post: "/v1/fulfillments"
+      body: "*"
+    };
+  }
+  rpc GetFulfillment(GetFulfillmentRequest) returns (GetFulfillmentResponse) {
+    option (google.api.http) = {
+      get: "/v1/fulfillments/{id}"
+    };
+  }
+  rpc UpdateFulfillmentStatus(UpdateFulfillmentStatusRequest) returns (UpdateFulfillmentStatusResponse) {
+    option (google.api.http) = {
+      patch: "/v1/fulfillments/{id}/status"
+      body: "*"
+    };
+  }
 }

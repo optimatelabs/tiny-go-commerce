@@ -1,0 +1,272 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "cart/v1/cart.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "CartService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/carts/{userId}": {
+      "get": {
+        "operationId": "CartService_GetCart",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetCartResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CartService"
+        ]
+      },
+      "delete": {
+        "operationId": "CartService_ClearCart",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ClearCartResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "CartService"
+        ]
+      }
+    },
+    "/v1/carts/{userId}/items": {
+      "post": {
+        "operationId": "CartService_AddItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AddItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CartServiceAddItemBody"
+            }
+          }
+        ],
+        "tags": [
+          "CartService"
+        ]
+      }
+    },
+    "/v1/carts/{userId}/items/{productId}": {
+      "delete": {
+        "operationId": "CartService_RemoveItem",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RemoveItemResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "CartService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CartServiceAddItemBody": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "Request to add an item to the cart."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AddItemResponse": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "$ref": "#/definitions/v1Cart"
+        }
+      },
+      "description": "Response after adding an item to the cart."
+    },
+    "v1Cart": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CartItem"
+          }
+        },
+        "totalPrice": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "description": "The Cart message represents a user's shopping session."
+    },
+    "v1CartItem": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "quantity": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "linePrice": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "description": "The CartItem message represents a product in the cart."
+    },
+    "v1ClearCartResponse": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "$ref": "#/definitions/v1Cart"
+        }
+      },
+      "description": "Response after clearing the cart."
+    },
+    "v1GetCartResponse": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "$ref": "#/definitions/v1Cart"
+        }
+      },
+      "description": "Response for getting a user's cart."
+    },
+    "v1RemoveItemResponse": {
+      "type": "object",
+      "properties": {
+        "cart": {
+          "$ref": "#/definitions/v1Cart"
+        }
+      },
+      "description": "Response after removing an item from the cart."
+    }
+  }
+}

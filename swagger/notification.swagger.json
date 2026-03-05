@@ -1,0 +1,209 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "notification/v1/notification.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "NotificationService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/notifications": {
+      "post": {
+        "operationId": "NotificationService_SendNotification",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SendNotificationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Request to queue an outbound email, text, or push alert.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SendNotificationRequest"
+            }
+          }
+        ],
+        "tags": [
+          "NotificationService"
+        ]
+      }
+    },
+    "/v1/notifications/{id}": {
+      "get": {
+        "operationId": "NotificationService_GetNotification",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetNotificationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "NotificationService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1GetNotificationResponse": {
+      "type": "object",
+      "properties": {
+        "notification": {
+          "$ref": "#/definitions/v1Notification"
+        }
+      },
+      "description": "Response returning the delivery status of the message."
+    },
+    "v1Notification": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/v1NotificationType"
+        },
+        "destination": {
+          "type": "string",
+          "title": "The contact destination (email address or phone number)"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/v1NotificationStatus"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "sentAt": {
+          "type": "string"
+        }
+      },
+      "description": "Notification represents an outbound transactional message."
+    },
+    "v1NotificationStatus": {
+      "type": "string",
+      "enum": [
+        "NOTIFICATION_STATUS_UNSPECIFIED",
+        "NOTIFICATION_STATUS_PENDING",
+        "NOTIFICATION_STATUS_SENT",
+        "NOTIFICATION_STATUS_FAILED"
+      ],
+      "default": "NOTIFICATION_STATUS_UNSPECIFIED",
+      "description": "The delivery state of a scheduled notification."
+    },
+    "v1NotificationType": {
+      "type": "string",
+      "enum": [
+        "NOTIFICATION_TYPE_UNSPECIFIED",
+        "NOTIFICATION_TYPE_EMAIL",
+        "NOTIFICATION_TYPE_SMS",
+        "NOTIFICATION_TYPE_PUSH"
+      ],
+      "default": "NOTIFICATION_TYPE_UNSPECIFIED",
+      "description": "How the notification should be delivered to the user."
+    },
+    "v1SendNotificationRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/v1NotificationType"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string",
+          "title": "Optional for SMS/Push"
+        },
+        "body": {
+          "type": "string"
+        }
+      },
+      "description": "Request to queue an outbound email, text, or push alert."
+    },
+    "v1SendNotificationResponse": {
+      "type": "object",
+      "properties": {
+        "notification": {
+          "$ref": "#/definitions/v1Notification"
+        }
+      },
+      "description": "Response after queuing a notification."
+    }
+  }
+}

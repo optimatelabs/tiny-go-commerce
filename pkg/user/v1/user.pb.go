@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -522,7 +523,7 @@ var File_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x12user/v1/user.proto\x12\auser.v1\x1a\x17validate/validate.proto\"\x8b\x02\n" +
+	"\x12user/v1/user.proto\x12\auser.v1\x1a\x17validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\"\x8b\x02\n" +
 	"\x04User\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x12\x1d\n" +
 	"\x05email\x18\x02 \x01(\tB\a\xfaB\x04r\x02`\x01R\x05email\x12&\n" +
@@ -560,12 +561,12 @@ const file_user_v1_user_proto_rawDesc = "" +
 	"first_name\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\tfirstName\x12$\n" +
 	"\tlast_name\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\blastName\"3\n" +
 	"\x0eSignupResponse\x12!\n" +
-	"\x04user\x18\x01 \x01(\v2\r.user.v1.UserR\x04user2\xcd\x01\n" +
-	"\vUserService\x12<\n" +
-	"\aGetUser\x12\x17.user.v1.GetUserRequest\x1a\x18.user.v1.GetUserResponse\x12E\n" +
+	"\x04user\x18\x01 \x01(\v2\r.user.v1.UserR\x04user2\x98\x02\n" +
+	"\vUserService\x12T\n" +
+	"\aGetUser\x12\x17.user.v1.GetUserRequest\x1a\x18.user.v1.GetUserResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/users/{id}\x12[\n" +
 	"\n" +
-	"CreateUser\x12\x1a.user.v1.CreateUserRequest\x1a\x1b.user.v1.CreateUserResponse\x129\n" +
-	"\x06Signup\x12\x16.user.v1.SignupRequest\x1a\x17.user.v1.SignupResponseB6Z4github.com/optimatelabs/tiny-go-commerce/pkg/user/v1b\x06proto3"
+	"CreateUser\x12\x1a.user.v1.CreateUserRequest\x1a\x1b.user.v1.CreateUserResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/users\x12V\n" +
+	"\x06Signup\x12\x16.user.v1.SignupRequest\x1a\x17.user.v1.SignupResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/users/signupB6Z4github.com/optimatelabs/tiny-go-commerce/pkg/user/v1b\x06proto3"
 
 var (
 	file_user_v1_user_proto_rawDescOnce sync.Once

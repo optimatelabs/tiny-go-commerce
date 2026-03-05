@@ -5,6 +5,7 @@ package order.v1;
 option go_package = "github.com/optimatelabs/tiny-go-commerce/pkg/order/v1";
 
 import "validate/validate.proto";
+import "google/api/annotations.proto";
 
 // Status of the order throughout its lifecycle.
 enum OrderStatus {
@@ -18,8 +19,8 @@ enum OrderStatus {
 
 // The Order message represents a completed checkout.
 message Order {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
-  int64 user_id = 2 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
+  string user_id = 2 [(validate.rules).string.uuid = true];
   repeated OrderItem items = 3;
   double total_amount = 4 [(validate.rules).double.gte = 0];
   OrderStatus status = 5 [(validate.rules).enum.defined_only = true];
@@ -30,7 +31,7 @@ message Order {
 
 // OrderItem represents a finalized line-item from a product purchase.
 message OrderItem {
-  int64 product_id = 1 [(validate.rules).int64.gt = 0];
+  string product_id = 1 [(validate.rules).string.uuid = true];
   int32 quantity = 2 [(validate.rules).int32.gt = 0];
   double unit_price = 3 [(validate.rules).double.gte = 0]; 
 }
@@ -46,8 +47,8 @@ message ShippingAddress {
 
 // Request to create an order (Checkout).
 message CreateOrderRequest {
-  int64 user_id = 1 [(validate.rules).int64.gt = 0];
-  int64 cart_id = 2; // Optional, so no strict validation here initially besides format if provided
+  string user_id = 1 [(validate.rules).string.uuid = true];
+  string cart_id = 2; // Optional, so no strict validation here initially besides format if provided
   ShippingAddress shipping_address = 3 [(validate.rules).message.required = true];
 }
 
@@ -58,7 +59,7 @@ message CreateOrderResponse {
 
 // Request to get a specific order.
 message GetOrderRequest {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
 }
 
 // Response for getting a specific order.
@@ -68,7 +69,7 @@ message GetOrderResponse {
 
 // Request to list a user's orders.
 message ListOrdersRequest {
-  int64 user_id = 1 [(validate.rules).int64.gt = 0];
+  string user_id = 1 [(validate.rules).string.uuid = true];
   int32 page_size = 2 [(validate.rules).int32 = {gte: 0, lte: 100}];
   string page_token = 3;
 }
@@ -81,7 +82,7 @@ message ListOrdersResponse {
 
 // Request to update the status of an order.
 message UpdateOrderStatusRequest {
-  int64 id = 1 [(validate.rules).int64.gt = 0];
+  string id = 1 [(validate.rules).string.uuid = true];
   OrderStatus status = 2 [(validate.rules).enum = {defined_only: true, not_in: [0]}];
 }
 
@@ -92,8 +93,26 @@ message UpdateOrderStatusResponse {
 
 // OrderService provides checkout and order management operations.
 service OrderService {
-  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
-  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
-  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse);
-  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse);
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {
+    option (google.api.http) = {
+      post: "/v1/orders"
+      body: "*"
+    };
+  }
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {
+    option (google.api.http) = {
+      get: "/v1/orders/{id}"
+    };
+  }
+  rpc ListOrders(ListOrdersRequest) returns (ListOrdersResponse) {
+    option (google.api.http) = {
+      get: "/v1/orders"
+    };
+  }
+  rpc UpdateOrderStatus(UpdateOrderStatusRequest) returns (UpdateOrderStatusResponse) {
+    option (google.api.http) = {
+      patch: "/v1/orders/{id}/status"
+      body: "*"
+    };
+  }
 }

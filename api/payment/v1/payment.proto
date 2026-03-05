@@ -5,6 +5,7 @@ package payment.v1;
 option go_package = "github.com/optimatelabs/tiny-go-commerce/pkg/payment/v1";
 
 import "validate/validate.proto";
+import "google/api/annotations.proto";
 
 // Status of the payment transaction.
 enum PaymentStatus {
@@ -54,6 +55,15 @@ message GetPaymentResponse {
 
 // PaymentService provides operations to process and retrieve financial transactions.
 service PaymentService {
-  rpc ProcessPayment(ProcessPaymentRequest) returns (ProcessPaymentResponse);
-  rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse);
+  rpc ProcessPayment(ProcessPaymentRequest) returns (ProcessPaymentResponse) {
+    option (google.api.http) = {
+      post: "/v1/payments"
+      body: "*"
+    };
+  }
+  rpc GetPayment(GetPaymentRequest) returns (GetPaymentResponse) {
+    option (google.api.http) = {
+      get: "/v1/payments/{id}"
+    };
+  }
 }

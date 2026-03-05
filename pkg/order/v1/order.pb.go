@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -84,8 +85,8 @@ func (OrderStatus) EnumDescriptor() ([]byte, []int) {
 // The Order message represents a completed checkout.
 type Order struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	Id              int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId          int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Id              string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId          string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Items           []*OrderItem           `protobuf:"bytes,3,rep,name=items,proto3" json:"items,omitempty"`
 	TotalAmount     float64                `protobuf:"fixed64,4,opt,name=total_amount,json=totalAmount,proto3" json:"total_amount,omitempty"`
 	Status          OrderStatus            `protobuf:"varint,5,opt,name=status,proto3,enum=order.v1.OrderStatus" json:"status,omitempty"`
@@ -126,18 +127,18 @@ func (*Order) Descriptor() ([]byte, []int) {
 	return file_order_v1_order_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Order) GetId() int64 {
+func (x *Order) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
-func (x *Order) GetUserId() int64 {
+func (x *Order) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 func (x *Order) GetItems() []*OrderItem {
@@ -185,7 +186,7 @@ func (x *Order) GetUpdatedAt() string {
 // OrderItem represents a finalized line-item from a product purchase.
 type OrderItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProductId     int64                  `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
+	ProductId     string                 `protobuf:"bytes,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
 	UnitPrice     float64                `protobuf:"fixed64,3,opt,name=unit_price,json=unitPrice,proto3" json:"unit_price,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -222,11 +223,11 @@ func (*OrderItem) Descriptor() ([]byte, []int) {
 	return file_order_v1_order_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *OrderItem) GetProductId() int64 {
+func (x *OrderItem) GetProductId() string {
 	if x != nil {
 		return x.ProductId
 	}
-	return 0
+	return ""
 }
 
 func (x *OrderItem) GetQuantity() int32 {
@@ -323,8 +324,8 @@ func (x *ShippingAddress) GetCountry() string {
 // Request to create an order (Checkout).
 type CreateOrderRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	UserId          int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	CartId          int64                  `protobuf:"varint,2,opt,name=cart_id,json=cartId,proto3" json:"cart_id,omitempty"` // Optional, so no strict validation here initially besides format if provided
+	UserId          string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	CartId          string                 `protobuf:"bytes,2,opt,name=cart_id,json=cartId,proto3" json:"cart_id,omitempty"` // Optional, so no strict validation here initially besides format if provided
 	ShippingAddress *ShippingAddress       `protobuf:"bytes,3,opt,name=shipping_address,json=shippingAddress,proto3" json:"shipping_address,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
@@ -360,18 +361,18 @@ func (*CreateOrderRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_order_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CreateOrderRequest) GetUserId() int64 {
+func (x *CreateOrderRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
-func (x *CreateOrderRequest) GetCartId() int64 {
+func (x *CreateOrderRequest) GetCartId() string {
 	if x != nil {
 		return x.CartId
 	}
-	return 0
+	return ""
 }
 
 func (x *CreateOrderRequest) GetShippingAddress() *ShippingAddress {
@@ -429,7 +430,7 @@ func (x *CreateOrderResponse) GetOrder() *Order {
 // Request to get a specific order.
 type GetOrderRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -464,11 +465,11 @@ func (*GetOrderRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_order_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *GetOrderRequest) GetId() int64 {
+func (x *GetOrderRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 // Response for getting a specific order.
@@ -519,7 +520,7 @@ func (x *GetOrderResponse) GetOrder() *Order {
 // Request to list a user's orders.
 type ListOrdersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -556,11 +557,11 @@ func (*ListOrdersRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_order_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *ListOrdersRequest) GetUserId() int64 {
+func (x *ListOrdersRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 func (x *ListOrdersRequest) GetPageSize() int32 {
@@ -633,7 +634,7 @@ func (x *ListOrdersResponse) GetNextPageToken() string {
 // Request to update the status of an order.
 type UpdateOrderStatusRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Status        OrderStatus            `protobuf:"varint,2,opt,name=status,proto3,enum=order.v1.OrderStatus" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -669,11 +670,11 @@ func (*UpdateOrderStatusRequest) Descriptor() ([]byte, []int) {
 	return file_order_v1_order_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *UpdateOrderStatusRequest) GetId() int64 {
+func (x *UpdateOrderStatusRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
 func (x *UpdateOrderStatusRequest) GetStatus() OrderStatus {
@@ -732,10 +733,10 @@ var File_order_v1_order_proto protoreflect.FileDescriptor
 
 const file_order_v1_order_proto_rawDesc = "" +
 	"\n" +
-	"\x14order/v1/order.proto\x12\border.v1\x1a\x17validate/validate.proto\"\xe7\x02\n" +
-	"\x05Order\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12 \n" +
-	"\auser_id\x18\x02 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x06userId\x12)\n" +
+	"\x14order/v1/order.proto\x12\border.v1\x1a\x17validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\"\xe9\x02\n" +
+	"\x05Order\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x12!\n" +
+	"\auser_id\x18\x02 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x06userId\x12)\n" +
 	"\x05items\x18\x03 \x03(\v2\x13.order.v1.OrderItemR\x05items\x121\n" +
 	"\ftotal_amount\x18\x04 \x01(\x01B\x0e\xfaB\v\x12\t)\x00\x00\x00\x00\x00\x00\x00\x00R\vtotalAmount\x127\n" +
 	"\x06status\x18\x05 \x01(\x0e2\x15.order.v1.OrderStatusB\b\xfaB\x05\x82\x01\x02\x10\x01R\x06status\x12N\n" +
@@ -743,10 +744,10 @@ const file_order_v1_order_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\tR\tupdatedAt\"\x87\x01\n" +
-	"\tOrderItem\x12&\n" +
+	"updated_at\x18\b \x01(\tR\tupdatedAt\"\x88\x01\n" +
+	"\tOrderItem\x12'\n" +
 	"\n" +
-	"product_id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\tproductId\x12#\n" +
+	"product_id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\tproductId\x12#\n" +
 	"\bquantity\x18\x02 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\bquantity\x12-\n" +
 	"\n" +
 	"unit_price\x18\x03 \x01(\x01B\x0e\xfaB\v\x12\t)\x00\x00\x00\x00\x00\x00\x00\x00R\tunitPrice\"\xad\x01\n" +
@@ -755,27 +756,27 @@ const file_order_v1_order_proto_rawDesc = "" +
 	"\x04city\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04city\x12\x1d\n" +
 	"\x05state\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05state\x12\x19\n" +
 	"\x03zip\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x03zip\x12\"\n" +
-	"\acountry\x18\x05 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x02R\acountry\"\x9f\x01\n" +
-	"\x12CreateOrderRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x06userId\x12\x17\n" +
-	"\acart_id\x18\x02 \x01(\x03R\x06cartId\x12N\n" +
+	"\acountry\x18\x05 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x02R\acountry\"\xa0\x01\n" +
+	"\x12CreateOrderRequest\x12!\n" +
+	"\auser_id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x06userId\x12\x17\n" +
+	"\acart_id\x18\x02 \x01(\tR\x06cartId\x12N\n" +
 	"\x10shipping_address\x18\x03 \x01(\v2\x19.order.v1.ShippingAddressB\b\xfaB\x05\x8a\x01\x02\x10\x01R\x0fshippingAddress\"<\n" +
 	"\x13CreateOrderResponse\x12%\n" +
-	"\x05order\x18\x01 \x01(\v2\x0f.order.v1.OrderR\x05order\"*\n" +
-	"\x0fGetOrderRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\"9\n" +
+	"\x05order\x18\x01 \x01(\v2\x0f.order.v1.OrderR\x05order\"+\n" +
+	"\x0fGetOrderRequest\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\"9\n" +
 	"\x10GetOrderResponse\x12%\n" +
-	"\x05order\x18\x01 \x01(\v2\x0f.order.v1.OrderR\x05order\"|\n" +
-	"\x11ListOrdersRequest\x12 \n" +
-	"\auser_id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x06userId\x12&\n" +
+	"\x05order\x18\x01 \x01(\v2\x0f.order.v1.OrderR\x05order\"}\n" +
+	"\x11ListOrdersRequest\x12!\n" +
+	"\auser_id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x06userId\x12&\n" +
 	"\tpage_size\x18\x02 \x01(\x05B\t\xfaB\x06\x1a\x04\x18d(\x00R\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageToken\"e\n" +
 	"\x12ListOrdersResponse\x12'\n" +
 	"\x06orders\x18\x01 \x03(\v2\x0f.order.v1.OrderR\x06orders\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"n\n" +
-	"\x18UpdateOrderStatusRequest\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x129\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"o\n" +
+	"\x18UpdateOrderStatusRequest\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x129\n" +
 	"\x06status\x18\x02 \x01(\x0e2\x15.order.v1.OrderStatusB\n" +
 	"\xfaB\a\x82\x01\x04\x10\x01 \x00R\x06status\"B\n" +
 	"\x19UpdateOrderStatusResponse\x12%\n" +
@@ -786,13 +787,15 @@ const file_order_v1_order_proto_rawDesc = "" +
 	"\x11ORDER_STATUS_PAID\x10\x02\x12\x18\n" +
 	"\x14ORDER_STATUS_SHIPPED\x10\x03\x12\x1a\n" +
 	"\x16ORDER_STATUS_DELIVERED\x10\x04\x12\x1a\n" +
-	"\x16ORDER_STATUS_CANCELLED\x10\x052\xc4\x02\n" +
-	"\fOrderService\x12J\n" +
-	"\vCreateOrder\x12\x1c.order.v1.CreateOrderRequest\x1a\x1d.order.v1.CreateOrderResponse\x12A\n" +
-	"\bGetOrder\x12\x19.order.v1.GetOrderRequest\x1a\x1a.order.v1.GetOrderResponse\x12G\n" +
+	"\x16ORDER_STATUS_CANCELLED\x10\x052\xab\x03\n" +
+	"\fOrderService\x12a\n" +
+	"\vCreateOrder\x12\x1c.order.v1.CreateOrderRequest\x1a\x1d.order.v1.CreateOrderResponse\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
+	"/v1/orders\x12Z\n" +
+	"\bGetOrder\x12\x19.order.v1.GetOrderRequest\x1a\x1a.order.v1.GetOrderResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/v1/orders/{id}\x12[\n" +
 	"\n" +
-	"ListOrders\x12\x1b.order.v1.ListOrdersRequest\x1a\x1c.order.v1.ListOrdersResponse\x12\\\n" +
-	"\x11UpdateOrderStatus\x12\".order.v1.UpdateOrderStatusRequest\x1a#.order.v1.UpdateOrderStatusResponseB7Z5github.com/optimatelabs/tiny-go-commerce/pkg/order/v1b\x06proto3"
+	"ListOrders\x12\x1b.order.v1.ListOrdersRequest\x1a\x1c.order.v1.ListOrdersResponse\"\x12\x82\xd3\xe4\x93\x02\f\x12\n" +
+	"/v1/orders\x12\x7f\n" +
+	"\x11UpdateOrderStatus\x12\".order.v1.UpdateOrderStatusRequest\x1a#.order.v1.UpdateOrderStatusResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*2\x16/v1/orders/{id}/statusB7Z5github.com/optimatelabs/tiny-go-commerce/pkg/order/v1b\x06proto3"
 
 var (
 	file_order_v1_order_proto_rawDescOnce sync.Once

@@ -1,0 +1,210 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "payment/v1/payment.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "PaymentService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/payments": {
+      "post": {
+        "operationId": "PaymentService_ProcessPayment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ProcessPaymentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Request to charge a payment method for an order.",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ProcessPaymentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PaymentService"
+        ]
+      }
+    },
+    "/v1/payments/{id}": {
+      "get": {
+        "operationId": "PaymentService_GetPayment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetPaymentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "PaymentService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1GetPaymentResponse": {
+      "type": "object",
+      "properties": {
+        "payment": {
+          "$ref": "#/definitions/v1Payment"
+        }
+      },
+      "description": "Response returning the requested Payment record."
+    },
+    "v1Payment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "currency": {
+          "type": "string",
+          "title": "e.g. USD, EUR"
+        },
+        "status": {
+          "$ref": "#/definitions/v1PaymentStatus"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "title": "e.g., \"stripe\", \"credit_card\""
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "External gateway ID. Empty if pending/failed."
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "description": "Payment represents an attempt to charge a user for an order."
+    },
+    "v1PaymentStatus": {
+      "type": "string",
+      "enum": [
+        "PAYMENT_STATUS_UNSPECIFIED",
+        "PAYMENT_STATUS_PENDING",
+        "PAYMENT_STATUS_SUCCESS",
+        "PAYMENT_STATUS_FAILED"
+      ],
+      "default": "PAYMENT_STATUS_UNSPECIFIED",
+      "description": "Status of the payment transaction."
+    },
+    "v1ProcessPaymentRequest": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "paymentMethod": {
+          "type": "string"
+        }
+      },
+      "description": "Request to charge a payment method for an order."
+    },
+    "v1ProcessPaymentResponse": {
+      "type": "object",
+      "properties": {
+        "payment": {
+          "$ref": "#/definitions/v1Payment"
+        }
+      },
+      "description": "Response mapping the newly created/processed Payment record."
+    }
+  }
+}

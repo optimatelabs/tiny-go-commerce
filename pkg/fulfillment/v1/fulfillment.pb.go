@@ -8,6 +8,7 @@ package v1
 
 import (
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -137,8 +138,8 @@ func (FulfillmentStatus) EnumDescriptor() ([]byte, []int) {
 // Fulfillment represents how an order gets to the customer (shipping or local store pickup).
 type Fulfillment struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
-	Id      int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	OrderId int64                  `protobuf:"varint,2,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	Id      string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	OrderId string                 `protobuf:"bytes,2,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	Type    FulfillmentType        `protobuf:"varint,3,opt,name=type,proto3,enum=fulfillment.v1.FulfillmentType" json:"type,omitempty"`
 	Status  FulfillmentStatus      `protobuf:"varint,4,opt,name=status,proto3,enum=fulfillment.v1.FulfillmentStatus" json:"status,omitempty"`
 	// Populated if type == FULFILLMENT_TYPE_SHIPPING
@@ -181,18 +182,18 @@ func (*Fulfillment) Descriptor() ([]byte, []int) {
 	return file_fulfillment_v1_fulfillment_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Fulfillment) GetId() int64 {
+func (x *Fulfillment) GetId() string {
 	if x != nil {
 		return x.Id
 	}
-	return 0
+	return ""
 }
 
-func (x *Fulfillment) GetOrderId() int64 {
+func (x *Fulfillment) GetOrderId() string {
 	if x != nil {
 		return x.OrderId
 	}
-	return 0
+	return ""
 }
 
 func (x *Fulfillment) GetType() FulfillmentType {
@@ -447,7 +448,7 @@ func (x *ShippingAddress) GetCountry() string {
 // Request to initialize the fulfillment process for an order.
 type CreateFulfillmentRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
-	OrderId         int64                  `protobuf:"varint,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	OrderId         string                 `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
 	Type            FulfillmentType        `protobuf:"varint,2,opt,name=type,proto3,enum=fulfillment.v1.FulfillmentType" json:"type,omitempty"` // Must be Shipping or Pickup
 	ShipmentDetails *ShipmentDetails       `protobuf:"bytes,3,opt,name=shipment_details,json=shipmentDetails,proto3" json:"shipment_details,omitempty"`
 	PickupDetails   *PickupDetails         `protobuf:"bytes,4,opt,name=pickup_details,json=pickupDetails,proto3" json:"pickup_details,omitempty"`
@@ -485,11 +486,11 @@ func (*CreateFulfillmentRequest) Descriptor() ([]byte, []int) {
 	return file_fulfillment_v1_fulfillment_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *CreateFulfillmentRequest) GetOrderId() int64 {
+func (x *CreateFulfillmentRequest) GetOrderId() string {
 	if x != nil {
 		return x.OrderId
 	}
-	return 0
+	return ""
 }
 
 func (x *CreateFulfillmentRequest) GetType() FulfillmentType {
@@ -759,10 +760,10 @@ var File_fulfillment_v1_fulfillment_proto protoreflect.FileDescriptor
 
 const file_fulfillment_v1_fulfillment_proto_rawDesc = "" +
 	"\n" +
-	" fulfillment/v1/fulfillment.proto\x12\x0efulfillment.v1\x1a\x17validate/validate.proto\"\x9e\x03\n" +
-	"\vFulfillment\x12\x17\n" +
-	"\x02id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\x02id\x12\"\n" +
-	"\border_id\x18\x02 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\aorderId\x12=\n" +
+	" fulfillment/v1/fulfillment.proto\x12\x0efulfillment.v1\x1a\x17validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\"\xa0\x03\n" +
+	"\vFulfillment\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\x02id\x12#\n" +
+	"\border_id\x18\x02 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\aorderId\x12=\n" +
 	"\x04type\x18\x03 \x01(\x0e2\x1f.fulfillment.v1.FulfillmentTypeB\b\xfaB\x05\x82\x01\x02\x10\x01R\x04type\x12C\n" +
 	"\x06status\x18\x04 \x01(\x0e2!.fulfillment.v1.FulfillmentStatusB\b\xfaB\x05\x82\x01\x02\x10\x01R\x06status\x12J\n" +
 	"\x10shipment_details\x18\x05 \x01(\v2\x1f.fulfillment.v1.ShipmentDetailsR\x0fshipmentDetails\x12D\n" +
@@ -786,9 +787,9 @@ const file_fulfillment_v1_fulfillment_proto_rawDesc = "" +
 	"\x04city\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04city\x12\x1d\n" +
 	"\x05state\x18\x03 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x05state\x12\x19\n" +
 	"\x03zip\x18\x04 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x03zip\x12\"\n" +
-	"\acountry\x18\x05 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x02R\acountry\"\x91\x02\n" +
-	"\x18CreateFulfillmentRequest\x12\"\n" +
-	"\border_id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\aorderId\x12?\n" +
+	"\acountry\x18\x05 \x01(\tB\b\xfaB\x05r\x03\x98\x01\x02R\acountry\"\x92\x02\n" +
+	"\x18CreateFulfillmentRequest\x12#\n" +
+	"\border_id\x18\x01 \x01(\tB\b\xfaB\x05r\x03\xb0\x01\x01R\aorderId\x12?\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x1f.fulfillment.v1.FulfillmentTypeB\n" +
 	"\xfaB\a\x82\x01\x04\x10\x01 \x00R\x04type\x12J\n" +
 	"\x10shipment_details\x18\x03 \x01(\v2\x1f.fulfillment.v1.ShipmentDetailsR\x0fshipmentDetails\x12D\n" +
@@ -817,11 +818,11 @@ const file_fulfillment_v1_fulfillment_proto_rawDesc = "" +
 	"\x1dFULFILLMENT_STATUS_IN_TRANSIT\x10\x03\x12 \n" +
 	"\x1cFULFILLMENT_STATUS_DELIVERED\x10\x04\x12 \n" +
 	"\x1cFULFILLMENT_STATUS_PICKED_UP\x10\x05\x12 \n" +
-	"\x1cFULFILLMENT_STATUS_EXCEPTION\x10\x062\xdb\x02\n" +
-	"\x12FulfillmentService\x12h\n" +
-	"\x11CreateFulfillment\x12(.fulfillment.v1.CreateFulfillmentRequest\x1a).fulfillment.v1.CreateFulfillmentResponse\x12_\n" +
-	"\x0eGetFulfillment\x12%.fulfillment.v1.GetFulfillmentRequest\x1a&.fulfillment.v1.GetFulfillmentResponse\x12z\n" +
-	"\x17UpdateFulfillmentStatus\x12..fulfillment.v1.UpdateFulfillmentStatusRequest\x1a/.fulfillment.v1.UpdateFulfillmentStatusResponseB=Z;github.com/optimatelabs/tiny-go-commerce/pkg/fulfillment/v1b\x06proto3"
+	"\x1cFULFILLMENT_STATUS_EXCEPTION\x10\x062\xc2\x03\n" +
+	"\x12FulfillmentService\x12\x85\x01\n" +
+	"\x11CreateFulfillment\x12(.fulfillment.v1.CreateFulfillmentRequest\x1a).fulfillment.v1.CreateFulfillmentResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/v1/fulfillments\x12~\n" +
+	"\x0eGetFulfillment\x12%.fulfillment.v1.GetFulfillmentRequest\x1a&.fulfillment.v1.GetFulfillmentResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/fulfillments/{id}\x12\xa3\x01\n" +
+	"\x17UpdateFulfillmentStatus\x12..fulfillment.v1.UpdateFulfillmentStatusRequest\x1a/.fulfillment.v1.UpdateFulfillmentStatusResponse\"'\x82\xd3\xe4\x93\x02!:\x01*2\x1c/v1/fulfillments/{id}/statusB=Z;github.com/optimatelabs/tiny-go-commerce/pkg/fulfillment/v1b\x06proto3"
 
 var (
 	file_fulfillment_v1_fulfillment_proto_rawDescOnce sync.Once

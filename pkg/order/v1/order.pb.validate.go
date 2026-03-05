@@ -35,6 +35,9 @@ var (
 	_ = sort.Sort
 )
 
+// define the regex for a UUID once up-front
+var _order_uuidPattern = regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+
 // Validate checks the field values on Order with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -56,10 +59,11 @@ func (m *Order) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetId() <= 0 {
-		err := OrderValidationError{
+	if err := m._validateUuid(m.GetId()); err != nil {
+		err = OrderValidationError{
 			field:  "Id",
-			reason: "value must be greater than 0",
+			reason: "value must be a valid UUID",
+			cause:  err,
 		}
 		if !all {
 			return err
@@ -67,10 +71,11 @@ func (m *Order) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
-	if m.GetUserId() <= 0 {
-		err := OrderValidationError{
+	if err := m._validateUuid(m.GetUserId()); err != nil {
+		err = OrderValidationError{
 			field:  "UserId",
-			reason: "value must be greater than 0",
+			reason: "value must be a valid UUID",
+			cause:  err,
 		}
 		if !all {
 			return err
@@ -185,6 +190,14 @@ func (m *Order) validate(all bool) error {
 	return nil
 }
 
+func (m *Order) _validateUuid(uuid string) error {
+	if matched := _order_uuidPattern.MatchString(uuid); !matched {
+		return errors.New("invalid uuid format")
+	}
+
+	return nil
+}
+
 // OrderMultiError is an error wrapping multiple validation errors returned by
 // Order.ValidateAll() if the designated constraints aren't met.
 type OrderMultiError []error
@@ -277,10 +290,11 @@ func (m *OrderItem) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetProductId() <= 0 {
-		err := OrderItemValidationError{
+	if err := m._validateUuid(m.GetProductId()); err != nil {
+		err = OrderItemValidationError{
 			field:  "ProductId",
-			reason: "value must be greater than 0",
+			reason: "value must be a valid UUID",
+			cause:  err,
 		}
 		if !all {
 			return err
@@ -312,6 +326,14 @@ func (m *OrderItem) validate(all bool) error {
 
 	if len(errors) > 0 {
 		return OrderItemMultiError(errors)
+	}
+
+	return nil
+}
+
+func (m *OrderItem) _validateUuid(uuid string) error {
+	if matched := _order_uuidPattern.MatchString(uuid); !matched {
+		return errors.New("invalid uuid format")
 	}
 
 	return nil
@@ -565,10 +587,11 @@ func (m *CreateOrderRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetUserId() <= 0 {
-		err := CreateOrderRequestValidationError{
+	if err := m._validateUuid(m.GetUserId()); err != nil {
+		err = CreateOrderRequestValidationError{
 			field:  "UserId",
-			reason: "value must be greater than 0",
+			reason: "value must be a valid UUID",
+			cause:  err,
 		}
 		if !all {
 			return err
@@ -620,6 +643,14 @@ func (m *CreateOrderRequest) validate(all bool) error {
 
 	if len(errors) > 0 {
 		return CreateOrderRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+func (m *CreateOrderRequest) _validateUuid(uuid string) error {
+	if matched := _order_uuidPattern.MatchString(uuid); !matched {
+		return errors.New("invalid uuid format")
 	}
 
 	return nil
@@ -851,10 +882,11 @@ func (m *GetOrderRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetId() <= 0 {
-		err := GetOrderRequestValidationError{
+	if err := m._validateUuid(m.GetId()); err != nil {
+		err = GetOrderRequestValidationError{
 			field:  "Id",
-			reason: "value must be greater than 0",
+			reason: "value must be a valid UUID",
+			cause:  err,
 		}
 		if !all {
 			return err
@@ -864,6 +896,14 @@ func (m *GetOrderRequest) validate(all bool) error {
 
 	if len(errors) > 0 {
 		return GetOrderRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+func (m *GetOrderRequest) _validateUuid(uuid string) error {
+	if matched := _order_uuidPattern.MatchString(uuid); !matched {
+		return errors.New("invalid uuid format")
 	}
 
 	return nil
@@ -1091,10 +1131,11 @@ func (m *ListOrdersRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetUserId() <= 0 {
-		err := ListOrdersRequestValidationError{
+	if err := m._validateUuid(m.GetUserId()); err != nil {
+		err = ListOrdersRequestValidationError{
 			field:  "UserId",
-			reason: "value must be greater than 0",
+			reason: "value must be a valid UUID",
+			cause:  err,
 		}
 		if !all {
 			return err
@@ -1117,6 +1158,14 @@ func (m *ListOrdersRequest) validate(all bool) error {
 
 	if len(errors) > 0 {
 		return ListOrdersRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+func (m *ListOrdersRequest) _validateUuid(uuid string) error {
+	if matched := _order_uuidPattern.MatchString(uuid); !matched {
+		return errors.New("invalid uuid format")
 	}
 
 	return nil
@@ -1355,10 +1404,11 @@ func (m *UpdateOrderStatusRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetId() <= 0 {
-		err := UpdateOrderStatusRequestValidationError{
+	if err := m._validateUuid(m.GetId()); err != nil {
+		err = UpdateOrderStatusRequestValidationError{
 			field:  "Id",
-			reason: "value must be greater than 0",
+			reason: "value must be a valid UUID",
+			cause:  err,
 		}
 		if !all {
 			return err
@@ -1390,6 +1440,14 @@ func (m *UpdateOrderStatusRequest) validate(all bool) error {
 
 	if len(errors) > 0 {
 		return UpdateOrderStatusRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+func (m *UpdateOrderStatusRequest) _validateUuid(uuid string) error {
+	if matched := _order_uuidPattern.MatchString(uuid); !matched {
+		return errors.New("invalid uuid format")
 	}
 
 	return nil
