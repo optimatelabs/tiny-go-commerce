@@ -41,9 +41,10 @@ message GetUserResponse {
 // Request to create a new user.
 message CreateUserRequest {
   string email = 1 [(validate.rules).string.email = true];
-  string first_name = 2 [(validate.rules).string.min_len = 1];
+  string password = 2 [(validate.rules).string.min_len = 8];
+  string first_name = 3 [(validate.rules).string.min_len = 1];
   string last_name = 4 [(validate.rules).string.min_len = 1];
-  string role = 3 [(validate.rules).string = {in: ["CUSTOMER", "ADMIN"]}];
+  string role = 5 [(validate.rules).string = {in: ["CUSTOMER", "ADMIN"]}];
 }
 
 // Response for creating a user.

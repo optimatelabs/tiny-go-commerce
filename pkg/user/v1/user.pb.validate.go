@@ -712,6 +712,17 @@ func (m *CreateUserRequest) validate(all bool) error {
 		errors = append(errors, err)
 	}
 
+	if utf8.RuneCountInString(m.GetPassword()) < 8 {
+		err := CreateUserRequestValidationError{
+			field:  "Password",
+			reason: "value length must be at least 8 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
 	if utf8.RuneCountInString(m.GetFirstName()) < 1 {
 		err := CreateUserRequestValidationError{
 			field:  "FirstName",
