@@ -16,7 +16,6 @@ The philosophy is simple: **We define the contracts, you build the logic.**
 
 - **7 Core Microservice Schemas**: Definitions for `product`, `user`, `cart`, `order`, `payment`, `fulfillment` (shipping & local pickup), and `notification` (email/SMS/push).
 - **Strong Payload Validation**: Integrated natively with Envoy's `protoc-gen-validate` to enforce UUID checks, numeric thresholds (e.g., `amount > 0`), and string lengths at the schema level before your Go code even executes!
-- **Database Optimized IDs**: Entities use strictly positive `int64` identifiers out-of-the-box, ensuring sequential B-tree indexing for high-performance databases.
 - **Common Utility Library**: A shared `common.v1` package standardizing `ErrorResponse` and `Pagination` logic across all domains.
 
 ## 🚀 Getting Started
